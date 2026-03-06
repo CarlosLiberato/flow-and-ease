@@ -25,7 +25,6 @@ const MonthlyExpenses = () => {
               key={expense.id}
               expense={expense}
               onSwipeLeft={() => handlePaid(expense.id)}
-              onSwipeRight={() => {}}
             />
           ))}
         </AnimatePresence>

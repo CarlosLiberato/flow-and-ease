@@ -9,7 +9,7 @@ const PaidBills = () => {
 
       <div className="px-5">
         {mockPaidExpenses.map(expense => (
-          <ExpenseItem key={expense.id} expense={expense} showBadge />
+          <ExpenseItem key={expense.id} expense={expense} isPaid />
         ))}
       </div>
     </div>
