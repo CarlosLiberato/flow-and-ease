@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { CreditCard, Receipt, ShoppingBag, CheckCircle2, BarChart3, PieChart } from 'lucide-react';
+import { CreditCard, Receipt, ShoppingBag, CheckCircle2, BarChart3, PieChart, Settings } from 'lucide-react';
 import CardsScreen from '@/pages/CardsScreen';
 import MonthlyExpenses from '@/pages/MonthlyExpenses';
 import VariableExpenses from '@/pages/VariableExpenses';
 import PaidBills from '@/pages/PaidBills';
 import Dashboard from '@/pages/Dashboard';
 import CategoriesScreen from '@/pages/CategoriesScreen';
+import SettingsScreen from '@/pages/SettingsScreen';
 
 const modules = [
   { id: 0, label: 'Carteira', icon: CreditCard, component: CardsScreen },
@@ -15,6 +16,7 @@ const modules = [
   { id: 3, label: 'Pagas', icon: CheckCircle2, component: PaidBills },
   { id: 4, label: 'Dashboard', icon: BarChart3, component: Dashboard },
   { id: 5, label: 'Categorias', icon: PieChart, component: CategoriesScreen },
+  { id: 6, label: 'Config', icon: Settings, component: SettingsScreen },
 ];
 
 const swipeVariants = {
