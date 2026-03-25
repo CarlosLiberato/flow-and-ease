@@ -12,6 +12,7 @@ const BillsScreen = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Fixas');
   const [fixedExpenses, setFixedExpenses] = useState<Expense[]>(mockExpensesFixed);
   const [showAdd, setShowAdd] = useState(false);
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
 
   const currentExpenses = useMemo(() => {
     switch (activeTab) {
@@ -118,6 +119,8 @@ const BillsScreen = () => {
                 expense={expense}
                 isPaid={activeTab === 'Pagas'}
                 onSwipeLeft={activeTab === 'Fixas' ? () => handlePaid(expense.id) : undefined}
+                isOpen={openCardId === expense.id}
+                onOpen={(id) => setOpenCardId(id)}
               />
             ))}
 

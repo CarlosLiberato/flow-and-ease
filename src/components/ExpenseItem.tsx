@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue, useTransform, useAnimationControls } from 'framer-motion';
 import { Expense, formatCurrency, mockCards } from '@/data/mockData';
 import { MessageSquare, Pencil, X, Trash2 } from 'lucide-react';
 import GlassModal from './GlassModal';
@@ -10,6 +10,8 @@ interface ExpenseItemProps {
   onDelete?: () => void;
   isPaid?: boolean;
   onTap?: () => void;
+  isOpen?: boolean;
+  onOpen?: (id: string) => void;
 }
 
 const categoryIcons: Record<string, string> = {
@@ -22,17 +24,41 @@ const categoryIcons: Record<string, string> = {
   'Vestuário': '👕',
 };
 
-const ExpenseItem = ({ expense, onSwipeLeft, onDelete, isPaid = false }: ExpenseItemProps) => {
+const ExpenseItem = ({ expense, onSwipeLeft, onDelete, isPaid = false, isOpen = false, onOpen }: ExpenseItemProps) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showNote, setShowNote] = useState(false);
   const [noteText, setNoteText] = useState(expense.notes || '');
 
   const x = useMotionValue(0);
+  const controls = useAnimationControls();
   const editOpacity = useTransform(x, [0, 80], [0, 1]);
   const paidOpacity = useTransform(x, [-80, 0], [1, 0]);
 
   const card = mockCards.find(c => c.id === expense.cardId);
+
+  // Close (reset) when another card opens
+  const prevIsOpen = useRef(isOpen);
+  useEffect(() => {
+    if (prevIsOpen.current && !isOpen) {
+      controls.start({ x: 0 }, { type: 'spring', stiffness: 300, damping: 30 });
+    }
+    prevIsOpen.current = isOpen;
+  }, [isOpen, controls]);
+
+  const resetPosition = () => {
+    controls.start({ x: 0 }, { type: 'spring', stiffness: 300, damping: 30 });
+  };
+
+  const handleOpenEdit = () => {
+    setShowEdit(true);
+    resetPosition();
+  };
+
+  const handleOpenNote = () => {
+    setShowNote(true);
+    resetPosition();
+  };
 
   return (
     <>
@@ -48,7 +74,7 @@ const ExpenseItem = ({ expense, onSwipeLeft, onDelete, isPaid = false }: Expense
             <div className="flex-1 bg-primary/15 rounded-l-2xl flex items-center gap-3 pl-4">
               <motion.div style={{ opacity: editOpacity }} className="flex items-center gap-3">
                 <button
-                  onPointerUp={() => setShowEdit(true)}
+                  onPointerUp={handleOpenEdit}
                   className="flex flex-col items-center gap-1"
                 >
                   <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
@@ -57,7 +83,7 @@ const ExpenseItem = ({ expense, onSwipeLeft, onDelete, isPaid = false }: Expense
                   <span className="text-[10px] font-medium text-primary">Editar</span>
                 </button>
                 <button
-                  onPointerUp={() => setShowNote(true)}
+                  onPointerUp={handleOpenNote}
                   className="flex flex-col items-center gap-1"
                 >
                   <div className="w-9 h-9 rounded-full bg-accent/40 flex items-center justify-center">
@@ -76,15 +102,32 @@ const ExpenseItem = ({ expense, onSwipeLeft, onDelete, isPaid = false }: Expense
         <motion.div
           className={`relative rounded-2xl p-4 shadow-sm border ${isPaid ? 'bg-success/5 border-success/20' : 'bg-card border-border'}`}
           style={!isPaid ? { x } : undefined}
+          animate={controls}
           drag={!isPaid ? 'x' : false}
           dragConstraints={{ left: -120, right: 120 }}
           dragElastic={0.3}
           onDragEnd={(_, info) => {
             if (!isPaid) {
-              if (info.offset.x < -80) onSwipeLeft?.();
+              const threshold = 60;
+              if (info.offset.x < -threshold) {
+                onSwipeLeft?.();
+                resetPosition();
+              } else if (info.offset.x > threshold) {
+                // Snap open to show edit/note buttons
+                controls.start({ x: 120 }, { type: 'spring', stiffness: 300, damping: 30 });
+                onOpen?.(expense.id);
+              } else {
+                resetPosition();
+              }
             }
           }}
-          onClick={() => setShowDetails(true)}
+          onClick={() => {
+            if (isOpen) {
+              resetPosition();
+              return;
+            }
+            setShowDetails(true);
+          }}
           whileTap={isPaid ? { scale: 0.98 } : undefined}
         >
           <div className="flex items-center gap-3">
