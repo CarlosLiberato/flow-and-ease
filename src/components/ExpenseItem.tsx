@@ -10,6 +10,8 @@ interface ExpenseItemProps {
   onDelete?: () => void;
   isPaid?: boolean;
   onTap?: () => void;
+  isOpen?: boolean;
+  onOpen?: (id: string) => void;
 }
 
 const categoryIcons: Record<string, string> = {
