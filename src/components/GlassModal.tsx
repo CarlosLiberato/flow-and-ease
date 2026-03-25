@@ -22,10 +22,16 @@ const GlassModal = ({ isOpen, onClose, title, children }: GlassModalProps) => {
             onClick={onClose}
           />
           <motion.div
-            className="fixed inset-x-4 bottom-8 z-50 glass rounded-3xl p-6 max-h-[80vh] overflow-y-auto"
-            initial={{ opacity: 0, y: 100, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.9 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+          <motion.div
+            className="w-full max-w-md glass rounded-3xl p-6 max-h-[80vh] overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             <div className="flex items-center justify-between mb-6">
