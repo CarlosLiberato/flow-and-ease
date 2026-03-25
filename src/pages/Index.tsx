@@ -1,22 +1,18 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { CreditCard, Receipt, ShoppingBag, CheckCircle2, BarChart3, PieChart, Settings } from 'lucide-react';
+import { CreditCard, Receipt, BarChart3, PieChart, Settings } from 'lucide-react';
 import CardsScreen from '@/pages/CardsScreen';
-import MonthlyExpenses from '@/pages/MonthlyExpenses';
-import VariableExpenses from '@/pages/VariableExpenses';
-import PaidBills from '@/pages/PaidBills';
+import BillsScreen from '@/pages/BillsScreen';
 import Dashboard from '@/pages/Dashboard';
 import CategoriesScreen from '@/pages/CategoriesScreen';
 import SettingsScreen from '@/pages/SettingsScreen';
 
 const modules = [
-  { id: 0, label: 'Carteira', icon: CreditCard, component: CardsScreen },
-  { id: 1, label: 'Fixas', icon: Receipt, component: MonthlyExpenses },
-  { id: 2, label: 'Variáveis', icon: ShoppingBag, component: VariableExpenses },
-  { id: 3, label: 'Pagas', icon: CheckCircle2, component: PaidBills },
-  { id: 4, label: 'Dashboard', icon: BarChart3, component: Dashboard },
-  { id: 5, label: 'Categorias', icon: PieChart, component: CategoriesScreen },
-  { id: 6, label: 'Config', icon: Settings, component: SettingsScreen },
+  { id: 0, label: 'Home', icon: BarChart3, component: Dashboard },
+  { id: 1, label: 'Contas', icon: Receipt, component: BillsScreen },
+  { id: 2, label: 'Carteira', icon: CreditCard, component: CardsScreen },
+  { id: 3, label: 'Categorias', icon: PieChart, component: CategoriesScreen },
+  { id: 4, label: 'Config', icon: Settings, component: SettingsScreen },
 ];
 
 const swipeVariants = {
