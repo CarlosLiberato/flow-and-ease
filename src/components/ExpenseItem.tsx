@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue, useTransform, useAnimationControls } from 'framer-motion';
 import { Expense, formatCurrency, mockCards } from '@/data/mockData';
 import { MessageSquare, Pencil, X, Trash2 } from 'lucide-react';
 import GlassModal from './GlassModal';
