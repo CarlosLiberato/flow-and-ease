@@ -73,32 +73,34 @@ const Index = () => {
         </AnimatePresence>
       </div>
 
-      {/* Bottom Tab Bar */}
-      <div className="bg-card/80 backdrop-blur-xl border-t border-border safe-bottom">
-        <div className="flex items-center justify-around px-2 pt-2 pb-1">
-          {modules.map((mod) => {
-            const isActive = page === mod.id;
-            return (
-              <motion.button
-                key={mod.id}
-                whileTap={{ scale: 0.85 }}
-                onClick={() => setPage([mod.id, mod.id > page ? 1 : -1])}
-                className="flex flex-col items-center gap-0.5 py-1 px-2 relative"
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -top-1 w-5 h-0.5 rounded-full bg-primary"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-                <mod.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className={`text-[10px] font-medium transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
-                  {mod.label}
-                </span>
-              </motion.button>
-            );
-          })}
+      {/* Bottom Tab Bar - Floating */}
+      <div className="px-4 pb-4 pt-2 safe-bottom">
+        <div className="bg-card/80 backdrop-blur-xl border border-border rounded-2xl shadow-lg">
+          <div className="flex items-center justify-around px-2 py-2">
+            {modules.map((mod) => {
+              const isActive = page === mod.id;
+              return (
+                <motion.button
+                  key={mod.id}
+                  whileTap={{ scale: 0.85 }}
+                  onClick={() => setPage([mod.id, mod.id > page ? 1 : -1])}
+                  className="flex flex-col items-center gap-0.5 py-1 px-3 relative"
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute -top-1 w-5 h-0.5 rounded-full bg-primary"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <mod.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                  <span className={`text-[10px] font-medium transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
+                    {mod.label}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
