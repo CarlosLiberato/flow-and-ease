@@ -12,6 +12,7 @@ const BillsScreen = () => {
   const [activeTab, setActiveTab] = useState<Tab>('Fixas');
   const [fixedExpenses, setFixedExpenses] = useState<Expense[]>(mockExpensesFixed);
   const [showAdd, setShowAdd] = useState(false);
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
 
   const currentExpenses = useMemo(() => {
     switch (activeTab) {
