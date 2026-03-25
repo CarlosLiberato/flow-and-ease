@@ -119,6 +119,8 @@ const BillsScreen = () => {
                 expense={expense}
                 isPaid={activeTab === 'Pagas'}
                 onSwipeLeft={activeTab === 'Fixas' ? () => handlePaid(expense.id) : undefined}
+                isOpen={openCardId === expense.id}
+                onOpen={(id) => setOpenCardId(id)}
               />
             ))}
 
