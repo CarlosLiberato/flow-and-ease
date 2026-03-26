@@ -68,7 +68,7 @@ const Index = () => {
             onDragEnd={handleDragEnd}
             className="absolute inset-0 overflow-y-auto"
           >
-            <CurrentComponent />
+            <CurrentComponent/>
           </motion.div>
         </AnimatePresence>
       </div>

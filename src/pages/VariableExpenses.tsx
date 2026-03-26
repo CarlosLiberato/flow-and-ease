@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { SlidersHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -6,12 +6,33 @@ import PageHeader from '@/components/PageHeader';
 import ExpenseItem from '@/components/ExpenseItem';
 import GlassModal from '@/components/GlassModal';
 import { mockExpensesVariable } from '@/data/mockData';
+import { Transaction, TransactionService } from '@/api/services/transactions.service';
 
 const filterOptions = ['Todas', 'Data', 'Categoria', 'Cartão', 'Valor'];
 
-const VariableExpenses = () => {
+
+
+const TransactionList = () => {
+  const [transactios, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true)
   const [showFilter, setShowFilter] = useState(false);
   const [activeFilter, setActiveFilter] = useState('Todas');
+
+useEffect(() => {
+  async function getAllTransactions() {
+    try{
+    const data = await TransactionService.getFixed();
+    setTransactions(data)
+    } catch (error) {
+      console.error('Ocorreu um erro ao carregar transações', error)
+    } finally {
+      setLoading(false)
+    }}
+
+    getAllTransactions()
+  }, []);
+
+  if (loading) return <p>Carregando...</p>;
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -30,6 +51,11 @@ const VariableExpenses = () => {
       />
 
       <div className="px-5">
+        <ul>{transactios.map((transaction) => (
+          <li key={transaction.id}>
+            {transaction.name} {transaction.description}
+          </li>
+        ))}</ul>
         <AnimatePresence>
           {mockExpensesVariable.map(expense => (
             <ExpenseItem key={expense.id} expense={expense} />
@@ -55,4 +81,5 @@ const VariableExpenses = () => {
   );
 };
 
-export default VariableExpenses;
+
+export default TransactionList;
